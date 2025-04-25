@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,22 +10,24 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
-import { RegisterSchema } from "../schemas";
-import useRegister from "@/hooks/api/auth/useRegister";
+import Link from "next/link";
 
-export function RegisterForm({
+import useForgotPassword from "@/hooks/api/auth/useForgotPassword";
+import { ForgorPasswordSchema } from "../shemas";
+
+export function ForgotPasswordForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const { mutateAsync: register, isPending } = useRegister();
+  const { mutateAsync: forgotPassword, isPending } = useForgotPassword();
 
   const formik = useFormik({
-    initialValues: { name: "", email: "", password: "" },
-    validationSchema: RegisterSchema,
+    initialValues: { email: "" },
+    validationSchema: ForgorPasswordSchema,
     onSubmit: async (values) => {
-      await register(values);
+      await forgotPassword(values);
     },
   });
 
@@ -34,30 +35,12 @@ export function RegisterForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Register</CardTitle>
-          <CardDescription>
-            Enter your email below to register your account
-          </CardDescription>
+          <CardTitle className="text-2xl">Forgot Password</CardTitle>
+          <CardDescription>Enter your credentials to sign in</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={formik.handleSubmit}>
             <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="name"
-                  placeholder="Your Name"
-                  required
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.name && !!formik.errors.name && (
-                  <p className="text-xs text-red-500">{formik.errors.name}</p>
-                )}
-              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -84,24 +67,18 @@ export function RegisterForm({
                   type="password"
                   placeholder="Your Password"
                   required
-                  value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.password && !!formik.errors.password && (
-                  <p className="text-xs text-red-500">
-                    {formik.errors.password}
-                  </p>
-                )}
               </div>
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Loading" : "Register"}
+                {isPending ? "Loading" : "Login"}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link href="/login" className="underline underline-offset-4">
-                Sign in
+              Do not have an account?{" "}
+              <Link href="/register" className="underline underline-offset-4">
+                Sign up
               </Link>
             </div>
           </form>
