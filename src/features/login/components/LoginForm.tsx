@@ -14,7 +14,7 @@ import useLogin from "@/hooks/api/auth/useLogin";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import Link from "next/link";
-import { LoginSchema } from "../schema";
+import { LoginSchema } from "../schemas";
 
 export function LoginForm({
   className,
