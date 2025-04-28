@@ -3,20 +3,18 @@
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { PaginationMeta } from "@/types/pagination";
-import { on } from "events";
 
 interface PaginationSectionProps extends PaginationMeta {
   onChangePage: (page: number) => void;
 }
 
-import React, { FC } from "react";
+import { FC } from "react";
 
 const PaginationSection: FC<PaginationSectionProps> = ({
   page,
@@ -29,13 +27,14 @@ const PaginationSection: FC<PaginationSectionProps> = ({
       onChangePage(page - 1);
     }
   };
+
   const handleNext = () => {
     const totalPage = Math.ceil(total / take);
-
     if (page < totalPage) {
       onChangePage(page + 1);
     }
   };
+
   return (
     <Pagination>
       <PaginationContent>

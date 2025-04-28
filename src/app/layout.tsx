@@ -1,8 +1,8 @@
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import ReactQueryProvider from "@/providers/ReactQueryProviders";
 import { Toaster } from "sonner";
+import "./globals.css";
 import Navbar from "@/components/Navbar";
 import NuqsProvider from "@/providers/NuqsProvider";
 
@@ -37,7 +37,6 @@ export default function RootLayout({
             {children}
           </NuqsProvider>
         </ReactQueryProvider>
-
         <Toaster richColors position="top-right" />
       </body>
     </html>
