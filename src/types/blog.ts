@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface Blog {
   id: number;
   slug: string;
@@ -7,7 +9,9 @@ export interface Blog {
   content: string;
   category: string;
   userId: number;
-  deletedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date | null;
+
+  user?: User; // optional karena belum tentu pasti ada properti user (saat tidak join table)
 }

@@ -10,62 +10,45 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useLogin from "@/hooks/api/auth/useLogin";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import Link from "next/link";
-import { LoginSchema } from "../schemas";
+import { ResetPasswordSchema } from "../schema";
+import useResetPassword from "@/hooks/api/auth/useResetPassword";
+import { FC } from "react";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
-  const { mutateAsync: login, isPending } = useLogin();
+interface ResetPasswordFormProps {
+  token: string;
+}
+
+export const ResetPasswordForm: FC<ResetPasswordFormProps> = ({ token }) => {
+  const { mutateAsync: resetPassword, isPending } = useResetPassword(token);
 
   const formik = useFormik({
-    initialValues: { email: "", password: "" },
-    validationSchema: LoginSchema,
+    initialValues: { password: "", confirmPassword: "" },
+    validationSchema: ResetPasswordSchema,
     onSubmit: async (values) => {
-      await login(values);
+      await resetPassword(values);
     },
   });
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6")}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>Enter your credentials to sign in</CardDescription>
+          <CardTitle className="text-2xl">Reset Password</CardTitle>
+          <CardDescription>Input your password to reset</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={formik.handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.email && !!formik.errors.email && (
-                  <p className="text-xs text-red-500">{formik.errors.email}</p>
-                )}
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
-
+                <Label htmlFor="email">Password</Label>
                 <Input
                   id="password"
                   name="password"
                   type="password"
-                  placeholder="Your Password"
+                  placeholder="Your password"
                   required
                   value={formik.values.password}
                   onChange={formik.handleChange}
@@ -77,8 +60,29 @@ export function LoginForm({
                   </p>
                 )}
               </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="email">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="Your password"
+                  required
+                  value={formik.values.confirmPassword}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.confirmPassword &&
+                  !!formik.errors.confirmPassword && (
+                    <p className="text-xs text-red-500">
+                      {formik.errors.confirmPassword}
+                    </p>
+                  )}
+              </div>
+
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Loading" : "Login"}
+                {isPending ? "Loading" : "Send"}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
@@ -92,4 +96,4 @@ export function LoginForm({
       </Card>
     </div>
   );
-}
+};

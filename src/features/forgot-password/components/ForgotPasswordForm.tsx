@@ -10,12 +10,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import useForgotPassword from "@/hooks/api/auth/useForgotPassword";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import Link from "next/link";
-
-import useForgotPassword from "@/hooks/api/auth/useForgotPassword";
-import { ForgorPasswordSchema } from "../shemas";
+import { ForgotPasswordSchema } from "../schemas";
 
 export function ForgotPasswordForm({
   className,
@@ -25,7 +24,7 @@ export function ForgotPasswordForm({
 
   const formik = useFormik({
     initialValues: { email: "" },
-    validationSchema: ForgorPasswordSchema,
+    validationSchema: ForgotPasswordSchema,
     onSubmit: async (values) => {
       await forgotPassword(values);
     },
@@ -36,7 +35,7 @@ export function ForgotPasswordForm({
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Forgot Password</CardTitle>
-          <CardDescription>Enter your credentials to sign in</CardDescription>
+          <CardDescription>Input your email to reset password</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={formik.handleSubmit}>
@@ -57,22 +56,9 @@ export function ForgotPasswordForm({
                   <p className="text-xs text-red-500">{formik.errors.email}</p>
                 )}
               </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="Your Password"
-                  required
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
+
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Loading" : "Login"}
+                {isPending ? "Loading" : "Reset Password"}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">

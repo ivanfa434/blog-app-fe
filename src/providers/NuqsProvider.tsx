@@ -1,13 +1,16 @@
-"use client";
+"use clients";
 
 import { FC, PropsWithChildren, Suspense } from "react";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const NuqsProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <NuqsProvider>
-      <Suspense>{children}Í</Suspense>
-    </NuqsProvider>
+    <NuqsAdapter>
+      <Suspense>{children}</Suspense>
+    </NuqsAdapter>
   );
 };
 
 export default NuqsProvider;
+
+// this function used to save / generate queries
