@@ -1,31 +1,57 @@
 "use client";
 
-import TiptapRichtextEditor from "@/components/TiptapRichtextEditor";
+import Loading from "@/components/Loading";
+import NoData from "@/components/NoData";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import useCreateBlog from "@/hooks/api/blog/useCreateBlog";
+import Unauthorized from "@/components/Unauthorized";
+import useGetBlogBySlug from "@/hooks/api/blog/useGetBlogBySlug";
+import useUpdateBlog from "@/hooks/api/blog/useUpdateBlog";
+import { getChangedValues } from "@/utils/getChangedValues";
 import { useFormik } from "formik";
-import { CreateBlogSchema } from "../schemas";
-import { ChangeEvent, useRef, useState } from "react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { init } from "next/dist/compiled/webpack/webpack";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { ChangeEvent, FC, useRef, useState } from "react";
 
-const CreateBlogForm = () => {
-  const { mutateAsync: createBlog, isPending } = useCreateBlog();
+const TiptapRichtextEditor = dynamic(
+  () => import("@/components/TiptapRichtextEditor"),
+  {
+    ssr: false,
+  },
+);
+
+interface EditBlogFormProps {
+  slug: string;
+}
+
+const EditBlogForm: FC<EditBlogFormProps> = ({ slug }) => {
+  const session = useSession();
+  const { data: blog, isPending: isPendingGetBlog } = useGetBlogBySlug(slug);
+  const { mutateAsync: updateBlog, isPending: isPendingUpdateBlog } =
+    useUpdateBlog(blog?.id);
+
+  const initialValues = {
+    title: blog?.title || "",
+    description: blog?.description || "",
+    content: blog?.content || "",
+    category: blog?.category || "",
+    thumbnail: null,
+  };
+
+  // const { mutateAsync: createBlog, isPending } = useUpdateBlog();
 
   const formik = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
-      content: "",
-      category: "",
-      thumbnail: null,
-    },
-    validationSchema: CreateBlogSchema,
+    initialValues: initialValues,
+    // validationSchema: CreateBlogSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
-      await createBlog(values);
+      const payload = getChangedValues(values, initialValues);
+      await updateBlog(payload);
     },
   });
 
@@ -48,6 +74,16 @@ const CreateBlogForm = () => {
       thumbnailRef.current.value = "";
     }
   };
+  if (isPendingGetBlog) {
+    return <Loading />;
+  }
+  if (!blog) {
+    return <NoData />;
+  }
+
+  if (blog.userId !== Number(session.data?.user.id)) {
+    return <Unauthorized />;
+  }
 
   return (
     <form className="mt-10 space-y-4" onSubmit={formik.handleSubmit}>
@@ -149,12 +185,12 @@ const CreateBlogForm = () => {
       )}
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Loading" : "Submit"}
+        <Button type="submit" disabled={isPendingUpdateBlog}>
+          {isPendingUpdateBlog ? "Loading" : "Submit"}
         </Button>
       </div>
     </form>
   );
 };
 
-export default CreateBlogForm;
+export default EditBlogForm;

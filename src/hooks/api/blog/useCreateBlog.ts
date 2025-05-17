@@ -28,7 +28,7 @@ const useCreateBlog = () => {
       createBlogForm.append("title", payload.title);
       createBlogForm.append("description", payload.description);
       createBlogForm.append("category", payload.category);
-      createBlogForm.append("content", payload.category);
+      createBlogForm.append("content", payload.content);
       createBlogForm.append("thumbnail", payload.thumbnail!);
 
       const { data } = await axiosInstance.post("/blogs", createBlogForm);
