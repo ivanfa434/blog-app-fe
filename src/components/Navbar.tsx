@@ -26,6 +26,8 @@ const Navbar = () => {
 
             {!session.data?.user && <Link href="/login">Sign in</Link>}
 
+            {!!session.data?.user && <Link href="/myblogs">My Blogs</Link>}
+
             {!!session.data?.user && <p onClick={logout}>Logout</p>}
           </div>
         </div>
