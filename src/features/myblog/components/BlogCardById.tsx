@@ -9,7 +9,7 @@ interface BlogCardProps {
   blog: Blog;
 }
 
-const BlogCard: FC<BlogCardProps> = ({ blog }) => {
+const BlogCardById: FC<BlogCardProps> = ({ blog }) => {
   return (
     <Link href={`/blogs/${blog.slug}`}>
       <Card>
@@ -41,4 +41,4 @@ const BlogCard: FC<BlogCardProps> = ({ blog }) => {
   );
 };
 
-export default BlogCard;
+export default BlogCardById;

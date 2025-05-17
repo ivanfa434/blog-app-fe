@@ -1,4 +1,4 @@
-import BlogDetailPageByIdPage from "@/features/blog/BlogDetailPageById";
+import BlogDetailPageByIdPage from "@/features/myblog/BlogDetailPageById";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import React from "react";

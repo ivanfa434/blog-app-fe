@@ -1,12 +1,12 @@
 import React from "react";
 import Jumbotron from "./components/Jumbotron";
-import BlogList from "./components/BlogList";
+import BlogListById from "./components/BlogListById";
 
 const BlogDetailPageByIdPage = () => {
   return (
     <main className="container mx-auto px-4">
       <Jumbotron />
-      <BlogList />
+      <BlogListById />
     </main>
   );
 };

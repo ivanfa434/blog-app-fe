@@ -9,7 +9,7 @@ interface GetBlogsQuery extends PaginationQueries {
 const useGetBlogsById = (queries?: GetBlogsQuery) => {
   const { axiosInstance } = useAxios();
   return useQuery({
-    queryKey: ["blogs", queries],
+    queryKey: ["blogs","user", queries],
     queryFn: async () => {
       const { data } = await axiosInstance.get<PageableResponse<Blog>>(
         "/blogs/user",

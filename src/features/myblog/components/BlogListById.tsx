@@ -5,10 +5,9 @@ import { Input } from "@/components/ui/input";
 import useGetBlogsById from "@/hooks/api/blog/useGetBlogsById";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
-import BlogCard from "./BlogCard";
-import useGetBlogs from "@/hooks/api/blog/useGetBlogs";
+import BlogCardById from "./BlogCardById";
 
-const BlogList = () => {
+const BlogListById = () => {
   const [page, setPage] = useQueryState("int", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [debounceSearch] = useDebounceValue(search, 500);
@@ -53,7 +52,7 @@ const BlogList = () => {
         <div className="space-y-8">
           <section className="mt-10 grid grid-cols-3 gap-4">
             {blogs.data.map((blog) => {
-              return <BlogCard key={blog.id} blog={blog} />;
+              return <BlogCardById key={blog.id} blog={blog} />;
             })}
           </section>
           <PaginationSection
@@ -68,4 +67,4 @@ const BlogList = () => {
   );
 };
 
-export default BlogList;
+export default BlogListById;
