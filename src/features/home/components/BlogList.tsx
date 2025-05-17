@@ -36,7 +36,7 @@ const BlogList = () => {
 
       {isPending && (
         <div className="flex h-[30vh] items-center justify-center">
-          <h2>Loading</h2>
+          <h2>Loading...</h2>
         </div>
       )}
 

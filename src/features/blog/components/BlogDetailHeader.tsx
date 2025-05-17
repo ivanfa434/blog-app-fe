@@ -6,6 +6,9 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { FC } from "react";
 import ModalDeleteBlog from "./ModalDeleteBlog";
+import { Button } from "@/components/ui/button";
+import { Edit2 } from "lucide-react";
+import Link from "next/link";
 
 interface BlogDetailHeaderProps {
   blog: Blog;
@@ -37,7 +40,14 @@ const BlogDetailHeader: FC<BlogDetailHeaderProps> = ({ blog }) => {
         </p>
 
         {Number(session.data?.user?.id) === blog.userId && (
-          <ModalDeleteBlog isPending={isPending} onClick={handleDeleteBlog} />
+          <div className="space-x-1">
+            <Link href={`/blogs/${blog.slug}/edit`}>
+              <Button variant="outline" size="icon">
+                <Edit2 />
+              </Button>
+            </Link>
+            <ModalDeleteBlog isPending={isPending} onClick={handleDeleteBlog} />
+          </div>
         )}
       </div>
 

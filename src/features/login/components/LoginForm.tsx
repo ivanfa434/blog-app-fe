@@ -87,6 +87,15 @@ export function LoginForm({
                 Sign up
               </Link>
             </div>
+            <div className="mt-4 text-center text-sm">
+              Lupa password anda?{" "}
+              <Link
+                href="/forgot-password"
+                className="underline underline-offset-4"
+              >
+                Forgot password?
+              </Link>
+            </div>
           </form>
         </CardContent>
       </Card>
